@@ -1,16 +1,27 @@
 # WPA/WPA2 Handshake Capture & Offline Cracking Audit
+
 Project Type: Wireless Network Security Audit
+
 Environment: Isolated Virtual Lab (Oracle VirtualBox + Kali Linux)
+
 Objective: Demonstrate the vulnerability of weak WPA/WPA2 Pre-Shared Keys (PSK) through 4-way handshake capture and offline dictionary analysis.
 
 # Table of Contents
+
 Lab Environment Setup
+
 Phase 1: Reconnaissance & Interface Preparation
+
 Phase 2: Targeted Packet Capture
+
 Phase 3: Handshake Interception (Deauthentication)
+
 Phase 4: Protocol Analysis (Wireshark)
+
 Phase 5: Offline Password Auditing
+
 Conclusion & Key Takeaways
+
 Disclaimer
 
 # Lab Environment Setup
