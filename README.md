@@ -28,9 +28,13 @@ Disclaimer
 To ensure a safe and legal testing environment without risking interference with production networks, a localized virtual lab was constructed:
 
 Hypervisor: Oracle VirtualBox
+
 Guest OS: Kali Linux (Penetration Testing Distribution)
+
 Access Point: A dedicated, isolated physical router.
+
 Target SSID: Test-1
+
 Target Password: 1234567890 (Intentionally weak password chosen to demonstrate the speed of dictionary attacks).
 
 # Phase 1: Reconnaissance & Interface Preparation
@@ -132,8 +136,11 @@ bash
 Results:
 
 The tool began computing the PBKDF2-SHA1 hashes and comparing the resulting MICs against the captured handshake.
+
 Time to Crack: Approximately 30 seconds.
+
 Recovered Key: 1234567890
+
 Note: At the time of recovery, the terminal indicated that the full rockyou.txt wordlist had roughly 1 hour and 48 minutes of passwords remaining to test, proving that weak passwords are found at the very beginning of such lists.
 
 
@@ -143,6 +150,7 @@ This project practically demonstrates why WPA/WPA2-PSK networks are vulnerable t
 Defensive Remediations :
 
 Password Complexity: WPA2 passwords must be long (16+ characters), complex and avoid common dictionary words to survive offline brute-force attacks.
+
 Upgrade to WPA3: WPA3 replaces the traditional 4-way handshake with SAE (Simultaneous Authentication of Equals), which is specifically designed to be immune to offline dictionary attacks, even if the password is weak.
 
 ⚠️ Disclaimer ⚠️
