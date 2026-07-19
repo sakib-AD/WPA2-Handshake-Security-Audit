@@ -12,6 +12,7 @@ Phase 4: Protocol Analysis (Wireshark)
 Phase 5: Offline Password Auditing
 Conclusion & Key Takeaways
 Disclaimer
+
 # Lab Environment Setup
 To ensure a safe and legal testing environment without risking interference with production networks, a localized virtual lab was constructed:
 
