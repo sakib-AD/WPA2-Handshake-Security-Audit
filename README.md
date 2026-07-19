@@ -1,6 +1,3 @@
-# WPA2-Handshake-Security-Audit
-Isolated lab environment demonstrating WPA/WPA2 4-way handshake interception, EAPOL analysis, and offline dictionary attacks against PBKDF2-SHA1 hashes.
-
 # WPA/WPA2 Handshake Capture & Offline Cracking Audit
 Project Type: Wireless Network Security Audit
 Environment: Isolated Virtual Lab (Oracle VirtualBox + Kali Linux)
@@ -41,12 +38,14 @@ Killed conflicting background processes (such as NetworkManager) to prevent them
 bash
 
 ```sudo airmon-ng check kill```
+
 1.3 Enabling Monitor Mode
 Switched the wlan0 interface from Managed Mode to Monitor Mode, allowing it to listen to all wireless frames in the air, not just those directed to it.
 
 bash
 
 ```sudo airmon-ng start wlan0```
+
 Interface was successfully renamed to wlan0mon.
 
 1.4 Verification
@@ -64,6 +63,7 @@ Scanned the surrounding airspace to identify access points, their channels, and 
 bash
 
 ```sudo airodump-ng wlan0mon```
+
 2.2 Target Identification
 From the scan results, located the target router Test-1. Opened a text file (text.txt) to securely log the following target variables:
 
@@ -76,6 +76,7 @@ Executed a targeted capture to save only the traffic specific to Test-1 on its s
 bash
 
 ```sudo airodump-ng -w datafile -c [channel_number] --bssid [Test-1_BSSID] wlan0mon```
+
 (Note: The terminal was left open to continuously listen for the handshake).
 
 
@@ -88,6 +89,7 @@ Opened a new terminal and broadcasted deauth frames to the target router.
 bash
 
 ```sudo aireplay-ng --deauth 0 -a [Test-1_BSSID] wlan0mon```
+
 Command Breakdown:
 
 --deauth 0: The 0 signifies a continuous, unlimited stream of deauthentication packets. (If replaced with a number like 10, it would send exactly 10 packets and stop).
@@ -104,6 +106,7 @@ Before attempting to crack the password, the captured file was analyzed to verif
 bash
 
 ```wireshark datafile-01.cap```
+
 Inside Wireshark, applied the display filter eapol to isolate the 4-way handshake frames (Messages 1-4), verifying that the ANonce, SNonce, and MICs were successfully captured.
 
 
@@ -113,13 +116,16 @@ With the handshake securely captured in datafile-01.cap, an offline dictionary a
 bash
 
 ```sudo aircrack-ng datafile-01.cap -w /usr/share/wordlists/rockyou.txt```
+
 Results:
 
 The tool began computing the PBKDF2-SHA1 hashes and comparing the resulting MICs against the captured handshake.
 Time to Crack: Approximately 30 seconds.
 Recovered Key: 1234567890
 Note: At the time of recovery, the terminal indicated that the full rockyou.txt wordlist had roughly 1 hour and 48 minutes of passwords remaining to test, proving that weak passwords are found at the very beginning of such lists.
-🧠 Conclusion & Key Takeaways :
+
+
+# Conclusion & Key Takeaways :
 This project practically demonstrates why WPA/WPA2-PSK networks are vulnerable to offline attacks. The security of the network relies entirely on the entropy of the password. Because the password 1234567890 is highly common, it was cracked in 30 seconds.
 
 Defensive Remediations :
@@ -127,5 +133,5 @@ Defensive Remediations :
 Password Complexity: WPA2 passwords must be long (16+ characters), complex and avoid common dictionary words to survive offline brute-force attacks.
 Upgrade to WPA3: WPA3 replaces the traditional 4-way handshake with SAE (Simultaneous Authentication of Equals), which is specifically designed to be immune to offline dictionary attacks, even if the password is weak.
 
-⚠️ Disclaimer
+⚠️ Disclaimer ⚠️
 This documentation details a cybersecurity experiment performed in a strictly controlled, isolated lab environment using personally owned hardware. Executing deauthentication attacks or capturing handshakes on networks you do not own or have explicit authorization to test is illegal. This project was conducted solely for educational purposes and CV portfolio building.
